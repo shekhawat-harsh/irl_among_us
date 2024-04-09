@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1009487601323",
+    "firebase_url": "https://amongusgdsc-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "amongusgdsc",
+    "storage_bucket": "amongusgdsc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009487601323:android:3eaf48a5168352f5e4e1ee",
+        "android_client_info": {
+          "package_name": "com.example.among_us_gdsc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEltUwA4_OujoKlajRjt30v8ZUnxpsmKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
