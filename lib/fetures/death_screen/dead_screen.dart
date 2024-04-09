@@ -1,21 +1,22 @@
-import 'package:among_us_gdsc/main.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class DeathScreen extends StatefulWidget {
-  const DeathScreen({super.key});
-
-  @override
-  State<DeathScreen> createState() => _DeathScreenState();
+void main(List<String> args) async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  // ]);
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  runApp(const MaterialApp(
+    home: Scaffold(
+      body: DeathScreen(),
+    ),
+  ));
 }
 
-class _DeathScreenState extends State<DeathScreen> {
-  @override
-  void initState() {
-    removeLocationForTeam(GlobalteamName);
-    // TODO: implement initState
-    super.initState();
-  }
+class DeathScreen extends StatelessWidget {
+  const DeathScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +36,8 @@ class _DeathScreenState extends State<DeathScreen> {
             ),
             Center(
               child: Image.asset(
-                "assets/among us kill2.png",
-                height: 350,
+                "assets/dead.gif",
+                height: 200,
               ),
             ),
             // const Positioned(
@@ -58,23 +59,5 @@ class _DeathScreenState extends State<DeathScreen> {
             // ),
           ],
         ));
-  }
-}
-
-void removeLocationForTeam(String teamId) async {
-  try {
-    // Get a reference to the Firebase Realtime Database
-    DatabaseReference databaseRef = FirebaseDatabase.instance.ref();
-
-    // Construct the path to the location entry for the specified teamId
-    String path = 'location/$teamId';
-
-    // Remove the location entry from the database
-    await databaseRef.child(path).remove();
-
-    print('Location removed successfully for team with ID: $teamId');
-  } catch (e) {
-    print('Error removing location for team with ID $teamId: $e');
-    // Handle error appropriately (e.g., show error message)
   }
 }

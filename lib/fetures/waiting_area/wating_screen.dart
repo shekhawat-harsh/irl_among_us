@@ -57,60 +57,84 @@ class _WaitingScreenState extends State<WaitingScreen> {
         .collection("GameStatus")
         .doc("Status")
         .snapshots();
-    return StreamBuilder(
-      stream: gameStatusInstance,
-      builder: (context, snapshot) {
-        if (snapshot.data!["status"] == false) {
-          return Stack(
-            children: [
-              Image.asset(
-                "assets/Waiting screen1.png",
-                height: double.infinity,
-                fit: BoxFit.cover,
-              ),
-              Positioned(
-                // Adjust the values below to position "Component 6.png" as desired
-                left: -19, // Change this value to position horizontally
-                top: 120, // Change this value to position vertically
-                child: Image.asset(
-                  "assets/Component 6.png",
-                  height: 640, // Adjust the height as needed
-                  fit: BoxFit.fitWidth,
+    return Scaffold(
+      body: StreamBuilder(
+        stream: gameStatusInstance,
+        builder: (context, snapshot) {
+          if (snapshot.data!["status"] == false) {
+            return Stack(
+              children: [
+                Image.asset(
+                  "assets/Waiting screen1.png",
+                  height: double.infinity,
+                  fit: BoxFit.cover,
                 ),
-              ),
-              const Center(
-                child: SizedBox(
-                  height: 33,
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.black,
-                    color: Color.fromRGBO(75, 62, 26, 1),
+                Positioned(
+                  // Adjust the values below to position "Component 6.png" as desired
+                  left: -19, // Change this value to position horizontally
+                  top: 120, // Change this value to position vertically
+                  child: Image.asset(
+                    "assets/Component 6.png",
+                    height: 640, // Adjust the height as needed
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
-              )
-            ],
-          );
-        } else {
-          FirestoreServices()
-              .isPlayerAliveImposter(FirebaseAuth.instance.currentUser!.email!)
-              .then((value) {
-            if (value) {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (ctx) => const BatchAllocationScreen()),
-                  (route) => false);
-            } else {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (ctx) => const BatchAllocationCrewmateScreen()),
-                  (route) => false);
-            }
-          });
+                Positioned(
+                  left: 134,
+                  top: 310,
+                  child: Image.asset(
+                    'assets/among-us-twerk.gif',
+                    height: 120,
+                  ),
+                ),
+                // const Center(
+                //   child: SizedBox(
+                //     height: 33,
+                //     child: CircularProgressIndicator(
+                //       backgroundColor: Color.fromRGBO(75, 62, 26, 1),
+                //       color: Color.fromRGBO(75, 62, 26, 1),
+                //     ),
+                //   ),
+                // ),
+                Positioned(
+                    left: 100,
+                    right: 70,
+                    bottom: 300,
+                    child: const Text(
+                      "Waiting for GDSC to start the game",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(110, 97, 62, 1),
+                      ),
+                    )),
+              ],
+            );
+          } else {
+            FirestoreServices()
+                .isPlayerAliveImposter(
+                    FirebaseAuth.instance.currentUser!.email!)
+                .then((value) {
+              if (value) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (ctx) => const BatchAllocationScreen()),
+                    (route) => false);
+              } else {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (ctx) =>
+                            const BatchAllocationCrewmateScreen()),
+                    (route) => false);
+              }
+            });
 
-          return Container();
-        }
-      },
+            return Container();
+          }
+        },
+      ),
     );
   }
 }

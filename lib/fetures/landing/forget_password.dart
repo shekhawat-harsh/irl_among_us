@@ -10,7 +10,7 @@ void main(List<String> args) async {
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     home: Scaffold(
       body: ForgotPassWord(),
     ),
@@ -54,7 +54,7 @@ class _ForgotPassWordState extends State<ForgotPassWord> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 70),
+                        SizedBox(height: 70),
 
                         /// Verify Text
                         Text(
@@ -80,13 +80,13 @@ class _ForgotPassWordState extends State<ForgotPassWord> {
                             color: const Color.fromRGBO(
                                 45, 54, 81, 1), // Set background color to white
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                color: Color.fromARGB(158, 0, 0, 0),
+                                color: const Color.fromARGB(158, 0, 0, 0),
                                 spreadRadius: 1,
                                 blurRadius: 2,
-                                offset:
-                                    Offset(0, 2), // changes position of shadow
+                                offset: const Offset(
+                                    0, 2), // changes position of shadow
                               ),
                             ],
                           ),
@@ -130,7 +130,7 @@ class _ForgotPassWordState extends State<ForgotPassWord> {
 
                         /// Resent Button
                         ///
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 17.0),
                           child: Center(
@@ -141,7 +141,7 @@ class _ForgotPassWordState extends State<ForgotPassWord> {
                                 style: ElevatedButton.styleFrom(
                                     // splashFactory: NoSplash.splashFactory,
                                     backgroundColor:
-                                        const Color.fromRGBO(17, 24, 40, 1),
+                                        Color.fromRGBO(17, 24, 40, 1),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0))),
