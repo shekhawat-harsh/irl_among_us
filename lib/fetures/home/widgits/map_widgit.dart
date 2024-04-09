@@ -17,6 +17,7 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
+  List<Marker> markers = [];
   late final MapController _mapController;
   GeolocatorServices geoservices = GeolocatorServices();
 
@@ -60,7 +61,11 @@ class _MapWidgetState extends State<MapWidget> {
         ),
         Consumer(
           builder: (context, ref, child) {
-            final markers = ref.watch(teamMarkersProvider).values.toList();
+            Timer(const Duration(seconds: 1), () {
+              setState(() {
+                markers = ref.watch(teamMarkersProvider).values.toList();
+              });
+            });
             return MarkerLayer(
               markers: markers,
             );

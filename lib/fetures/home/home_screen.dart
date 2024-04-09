@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _subscribeToPlayerData();
 
     // Initialize the timer in initState
-    _locationUpdateTimer = Timer.periodic(const Duration(seconds: 0), (timer) {
+    _locationUpdateTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       _updatePlayerLocation();
     });
   }
