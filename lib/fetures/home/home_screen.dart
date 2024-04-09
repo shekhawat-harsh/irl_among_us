@@ -92,20 +92,61 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Color.fromRGBO(255, 249, 219, 1),
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(255, 249, 219, 1),
         actions: [
-          if (_playerRole.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "You are a $_playerRole",
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Card(
+                elevation: 0,
+                color: Color.fromRGBO(29, 25, 11, 0.459),
+                child: SizedBox(
+                  height: 40,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 8,
+                      ),
+                      if (_playerRole.isNotEmpty)
+                        Text(
+                          "$_playerRole",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.black),
+                        ),
+                      if (_playerRole == "Imposter")
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image(
+                            image: AssetImage("assets/imposter.gif"),
+                            height: 40,
+                          ),
+                        )
+                    ],
+                  ),
+                )),
+          )
+        ],
+        title: Card(
+          elevation: 0,
+          color: Color.fromRGBO(29, 25, 11, 0.459),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: 250,
+              height: 30,
+              child: const Text(
+                'IRL Among Us',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
               ),
             ),
-        ],
-        title: const Text('Home'),
+          ),
+        ),
       ),
       body: SlidingSheet(
         elevation: 8,
