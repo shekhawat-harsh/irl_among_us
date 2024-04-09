@@ -46,6 +46,7 @@ dependencies:
   latlong2: ^0.8.2
   flutter_riverpod: ^2.5.1
   firebase_database: ^10.5.0
+  audioplayers: ^6.0.0
 
 dev_dependencies:
   flutter_test:

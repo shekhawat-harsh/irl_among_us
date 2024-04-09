@@ -87,9 +87,10 @@ class MyApp extends StatelessWidget {
                         ),
                       );
                     } else {
-                      bool isRegistered = registrationSnapshot.data ?? false;
+                      bool isRegistered = registrationSnapshot.data!;
 
                       if (isRegistered) {
+                        print("is regestered is true ");
                         return FutureBuilder<bool>(
                           future:
                               FirestoreServices().isPlayerAlive(user.email!),
@@ -122,6 +123,7 @@ class MyApp extends StatelessWidget {
                           },
                         );
                       } else {
+                        print("is regestered is false");
                         // Navigate to JoinTeamScreen if player is not registered
                         return const JoinTeamScreen();
                       }

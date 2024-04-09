@@ -1,8 +1,10 @@
 import 'package:among_us_gdsc/fetures/join_a_team/join_team.dart';
 import 'package:among_us_gdsc/fetures/landing/forget_password.dart';
 import 'package:among_us_gdsc/fetures/signup/screen/signup_page.dart';
+import 'package:among_us_gdsc/fetures/waiting_area/wating_screen.dart';
+import 'package:among_us_gdsc/main.dart';
 import 'package:among_us_gdsc/services/firebase_services.dart';
-import 'package:among_us_gdsc/services/firebase_services.dart';
+import 'package:among_us_gdsc/services/firestore_services.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) async {
@@ -78,14 +80,28 @@ class LandingPage extends StatelessWidget {
                               _passwordController.text.trim(),
                               context);
                           if (res == "Success") {
-                            // todo
+                            bool isPlayerRegestered = await FirestoreServices()
+                                .isPlayerRegistered(_emailController.text);
 
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const JoinTeamScreen(),
-                                ),
-                                (route) => false);
+                            if (isPlayerRegestered) {
+                              String temaName = (await FirestoreServices()
+                                  .getTeamNameByEmail(_emailController.text))!;
+                              GlobalteamName = temaName;
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const WaitingScreen(),
+                                  ),
+                                  (route) => false);
+                            } else {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const JoinTeamScreen(),
+                                  ),
+                                  (route) => false);
+                            } // todo
                           } else {
                             Navigator.pop(context);
                           }
@@ -166,10 +182,10 @@ class LandingPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 15),
-                  Column(
+                  const SizedBox(height: 15),
+                  const Column(
                     children: [
-                      Container(
+                      SizedBox(
                         width: double.infinity,
                         height: 44,
                         child: Image(image: AssetImage("assets/gdsc2.png")),

@@ -112,47 +112,39 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                       locationData.forEach((key, value) {
                         num destinationLat = value["Lat"];
                         num destinationLong = value["Long"];
-                        ref.read(teamMarkersProvider.notifier).state[value["Team"]] =
-                            Marker(
-                                point: LatLng(value["Lat"], value["Long"]),
-                                builder: (context) {
-                                  return const Image(
-                                      height: 1000,
-                                      width: 1000,
-                                      image:
-                                          AssetImage("assets/locationPin.png"));
-                                });
+                        ref
+                            .read(teamMarkersProvider.notifier)
+                            .state[value["Team"]] = Marker(
+                          point: LatLng(value["Lat"], value["Long"]),
+                          builder: (context) {
+                            return const Image(
+                              height: 1000,
+                              width: 1000,
+                              image: AssetImage("assets/locationPin.png"),
+                            );
+                          },
+                        );
+
                         if (userLocation != null) {
                           if (isWithinRadius(
-                              destinationLat,
-                              destinationLong,
-                              userLocation!.latitude,
-                              userLocation!.longitude,
-                              20.00)) {
+                            destinationLat,
+                            destinationLong,
+                            userLocation!.latitude,
+                            userLocation!.longitude,
+                            10.00,
+                          )) {
                             print(value["Lat"]);
                             if (value["Team"] != GlobalteamName) {
                               nearbyTeams.add(value["Team"]);
                             }
-                            // Map<dynamic, LatLng> newMarkerPositions = {
-                            //   value["Team"]:
-                            //       LatLng(destinationLat, destinationLong)
-                            // };
-                            // ref
-                            //     .read(teamMarkersProvider.notifier)
-                            //     .state
-                            //     .addEntries(
-                            //       newMarkerPositions.entries
-                            //           .map((entry) => MapEntry(
-                            //               entry.key.toString(),
-                            //               Marker(
-                            //                 point: entry.value,
-                            //                 builder: (context) =>
-                            //                     const Icon(Icons.place),
-                            //               ))),
+                          } else {
+                            // Remove the team from the nearbyTeams list if it's outside the 10-meter radius
+                            if (nearbyTeams.contains(value["Team"])) {
+                              nearbyTeams.remove(value["Team"]);
+                            }
                           }
                         }
                       });
-
                       // for (var loc in snapshot.data!.docs) {
                       //   if (userLocation != null) {
                       //     double destinationLat = loc["Lat"];
