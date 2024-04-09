@@ -1,7 +1,14 @@
 import 'dart:async';
+
 import 'package:among_us_gdsc/fetures/home/home_screen.dart';
 import 'package:among_us_gdsc/main.dart';
 import 'package:flutter/material.dart';
+
+void main(List<String> args) {
+  runApp(const MaterialApp(
+    home: BatchAllocationCrewmateScreen(),
+  ));
+}
 
 class BatchAllocationCrewmateScreen extends StatefulWidget {
   const BatchAllocationCrewmateScreen({super.key});
@@ -52,21 +59,28 @@ class _BatchAllocationCrewmateScreenState
         backgroundColor: const Color.fromRGBO(255, 249, 219, 1),
         body: Stack(
           children: [
-            Positioned(
+            Center(
               // Adjust the values below to position "Component 6.png" as desired
-              left: -25, // Change this value to position horizontally
-              top: 120, // Change this value to position vertically
+              // Change this value to position vertically
               child: Image.asset(
-                "assets/Component 7.png",
-                height: 640, // Adjust the height as needed
-                fit: BoxFit.fitWidth,
+                "assets/BadgeAllocation (1).png",
+                height: 1000, // Adjust the height as needed
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              left: 50,
+              top: 210,
+              child: Image.asset(
+                'assets/crewmate.gif',
+                height: 170,
               ),
             ),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const CircularProgressIndicator(), // Display circular progress indicator
+                  // const CircularProgressIndicator(), // Display circular progress indicator
                   const SizedBox(height: 20),
                   Text(
                     '$_countdown', // Show countdown value
@@ -77,7 +91,7 @@ class _BatchAllocationCrewmateScreenState
                     ),
                   ),
                   const Text(
-                    'You are an Crewmate !!', // Show countdown value
+                    'You are a Crewmate !!', // Show countdown value
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -87,6 +101,18 @@ class _BatchAllocationCrewmateScreenState
                 ],
               ),
             ),
+            Positioned(
+                left: 60,
+                right: 30,
+                bottom: 130,
+                child: const Text(
+                  "Use your abilities and save yourself and your team's imposter from other teams...",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(110, 97, 62, 1),
+                  ),
+                )),
           ],
         ));
   }

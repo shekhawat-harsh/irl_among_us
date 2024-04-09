@@ -2,6 +2,7 @@ import 'package:among_us_gdsc/fetures/join_a_team/join_team.dart';
 import 'package:among_us_gdsc/fetures/landing/forget_password.dart';
 import 'package:among_us_gdsc/fetures/signup/screen/signup_page.dart';
 import 'package:among_us_gdsc/services/firebase_services.dart';
+import 'package:among_us_gdsc/services/firebase_services.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) async {
@@ -165,6 +166,16 @@ class LandingPage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: 15),
+                  Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 44,
+                        child: Image(image: AssetImage("assets/gdsc2.png")),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
