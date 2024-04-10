@@ -23,7 +23,7 @@ class NearbyPlayersListWidget extends StatefulWidget {
 
 class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
   Position? userLocation;
-  late bool isCooldownActive;
+   bool isCooldownActive = false;
   late DateTime cooldownEndTime;
   List<String> nearbyTeams = [];
 

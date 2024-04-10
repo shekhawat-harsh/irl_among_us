@@ -180,7 +180,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 snappings: [0.1, 0.7, 1.0],
                 positioning: SnapPositioning.relativeToAvailableSpace,
               ),
-              body: const MapWidget(),
+              body: const SizedBox(
+                  height: double.infinity,
+                  width: double.infinity,
+                  child: MapWidget()),
               builder: (context, state) {
                 if (_playerRole == 'Imposter') {
                   return const SizedBox(
