@@ -50,6 +50,10 @@ class _WaitingScreenState extends State<WaitingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenWidth < 600;
+
     var gameStatusInstance = FirebaseFirestore.instance
         .collection("GameStatus")
         .doc("Status")
@@ -63,39 +67,42 @@ class _WaitingScreenState extends State<WaitingScreen> {
               children: [
                 Image.asset(
                   "assets/Waiting screen1.png",
-                  height: double.infinity,
+                  width: screenWidth,
+                  height: screenHeight,
                   fit: BoxFit.cover,
                 ),
                 Positioned(
-                  // Adjust the values below to position "Component 6.png" as desired
-                  left: -19, // Change this value to position horizontally
-                  top: 120, // Change this value to position vertically
+                  left: screenWidth * 0.05,
+                  top: screenHeight * 0.2,
                   child: Image.asset(
                     "assets/Component 6.png",
-                    height: 640, // Adjust the height as needed
-                    fit: BoxFit.fitWidth,
+                    width: screenWidth * 0.9,
+                    height: screenHeight * 0.6,
+                    fit: BoxFit.contain,
                   ),
                 ),
                 Positioned(
-                  left: 134,
-                  top: 310,
+                  left: screenWidth * 0.4,
+                  top: screenHeight * 0.5,
                   child: Image.asset(
                     'assets/among-us-twerk.gif',
-                    height: 120,
+                    height: screenHeight * 0.15,
                   ),
                 ),
-                const Positioned(
-                    left: 100,
-                    right: 70,
-                    bottom: 300,
-                    child: Text(
-                      "Waiting for GDSC to start the game",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(110, 97, 62, 1),
-                      ),
-                    )),
+                Positioned(
+                  left: screenWidth * 0.2,
+                  right: screenWidth * 0.2,
+                  bottom: screenHeight * 0.4,
+                  child: Text(
+                    "Waiting for GDSC to start the game",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: isSmallScreen ? 18 : 24,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromRGBO(110, 97, 62, 1),
+                    ),
+                  ),
+                ),
               ],
             );
           } else {

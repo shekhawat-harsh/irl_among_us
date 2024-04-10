@@ -26,6 +26,7 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
   bool isCooldownActive = false;
   late DateTime cooldownEndTime;
   ValueNotifier<List<String>> nearbyTeams = ValueNotifier([]);
+  bool _isButtonDisabled = true;
 
   @override
   void initState() {
@@ -209,16 +210,28 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                                                       Text(playerDoc["email"]),
                                                   trailing: ElevatedButton(
                                                     onPressed: () async {
-                                                      await handleKillPlayer(
-                                                          team, playerDoc.id);
+                                                      // Disable the button immediately
                                                       setState(() {
-                                                        isCooldownActive = true;
-                                                        cooldownEndTime =
-                                                            DateTime.now().add(
-                                                                const Duration(
-                                                                    seconds:
-                                                                        10));
-                                                        saveCooldownState(true,
+                                                        _isButtonDisabled =
+                                                            true;
+                                                      });
+
+                                                      // Perform the Firebase operation in a microtask
+                                                      Future.microtask(
+                                                          () async {
+                                                        await handleKillPlayer(
+                                                            team, playerDoc.id);
+                                                        setState(() {
+                                                          isCooldownActive =
+                                                              true;
+                                                          cooldownEndTime =
+                                                              DateTime.now().add(
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          10));
+                                                        });
+                                                        await saveCooldownState(
+                                                            true,
                                                             cooldownEndTime);
                                                       });
                                                     },
