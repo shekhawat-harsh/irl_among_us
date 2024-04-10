@@ -6,6 +6,7 @@ import 'package:among_us_gdsc/fetures/batch_allocation_screen/batch_alocation_cr
 import 'package:among_us_gdsc/firebase_options.dart';
 import 'package:among_us_gdsc/main.dart';
 import 'package:among_us_gdsc/services/firestore_services.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,6 +37,7 @@ class WaitingScreen extends StatefulWidget {
 
 class _WaitingScreenState extends State<WaitingScreen> {
   late GeolocatorServices geoservices;
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
   void initState() {
@@ -47,12 +49,25 @@ class _WaitingScreenState extends State<WaitingScreen> {
         print(location);
       },
     );
+    _playAudio();
     super.initState();
   }
 
   @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future<void> _playAudio() async {
+    var play = await _audioPlayer.play(AssetSource('waiting.mp3'));
+    Timer(const Duration(seconds: 72), () async {
+      play;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
     var gameStatusInstance = FirebaseFirestore.instance
         .collection("GameStatus")
         .doc("Status")
@@ -87,20 +102,11 @@ class _WaitingScreenState extends State<WaitingScreen> {
                     height: 120,
                   ),
                 ),
-                // const Center(
-                //   child: SizedBox(
-                //     height: 33,
-                //     child: CircularProgressIndicator(
-                //       backgroundColor: Color.fromRGBO(75, 62, 26, 1),
-                //       color: Color.fromRGBO(75, 62, 26, 1),
-                //     ),
-                //   ),
-                // ),
-                Positioned(
+                const Positioned(
                     left: 100,
                     right: 70,
                     bottom: 300,
-                    child: const Text(
+                    child: Text(
                       "Waiting for GDSC to start the game",
                       style: TextStyle(
                         fontSize: 24,

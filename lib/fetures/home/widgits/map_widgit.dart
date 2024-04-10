@@ -48,7 +48,7 @@ class _MapWidgetState extends State<MapWidget> {
             ~InteractiveFlag.pinchZoom &
             ~InteractiveFlag.doubleTapZoom,
         center: LatLng(31.7070, 76.5263),
-        zoom: 17,
+        zoom: 17.5,
       ),
       children: [
         TileLayer(

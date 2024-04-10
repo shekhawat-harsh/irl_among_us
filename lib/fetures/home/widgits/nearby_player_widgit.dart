@@ -7,6 +7,7 @@ import 'package:among_us_gdsc/services/firestore_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -25,6 +26,7 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
   Position? userLocation;
   late bool isCooldownActive;
   late DateTime cooldownEndTime;
+  List<String> nearbyTeams = [];
 
   @override
   void initState() {
@@ -63,7 +65,7 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
     return Consumer(
       builder: (context, ref, child) {
         return Scaffold(
-          backgroundColor: Color.fromRGBO(255, 249, 219, 1),
+          backgroundColor: const Color.fromRGBO(255, 249, 219, 1),
           body: Padding(
             padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
             child: Column(
@@ -95,18 +97,16 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                           );
                         }
 
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text('Error: ${snapshot.error}'),
-                          );
-                        }
+                        // if (snapshot.hasError) {
+                        //   return Center(
+                        //     child: Text('Error: ${snapshot.error}'),
+                        //   );
+                        // }
                         if (!snapshot.hasData) {
                           return const Center(
                             child: Text("No players nearby."),
                           );
                         }
-
-                        List<String> nearbyTeams = [];
 
                         DataSnapshot dataSnapshot = snapshot.data!.snapshot;
                         Map<dynamic, dynamic> locationData =
@@ -115,144 +115,111 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                         locationData.forEach((key, value) {
                           num destinationLat = value["Lat"];
                           num destinationLong = value["Long"];
-                          ref.read(teamMarkersProvider.notifier).state[value["Team"]] =
-                              Marker(
-                                  point: LatLng(value["Lat"], value["Long"]),
-                                  builder: (context) {
-                                    return const Image(
-                                        height: 1000,
-                                        width: 1000,
-                                        image: AssetImage(
-                                            "assets/locationPin.png"));
-                                  });
+                          ref
+                              .read(teamMarkersProvider.notifier)
+                              .state[value["Team"]] = Marker(
+                            point: LatLng(value["Lat"], value["Long"]),
+                            builder: (context) {
+                              return const Image(
+                                height: 1000,
+                                width: 1000,
+                                image: AssetImage("assets/locationPin.png"),
+                              );
+                            },
+                          );
+
                           if (userLocation != null) {
                             if (isWithinRadius(
-                                destinationLat,
-                                destinationLong,
-                                userLocation!.latitude,
-                                userLocation!.longitude,
-                                20.00)) {
-                              print(value["Lat"]);
-                              if (value["Team"] != GlobalteamName) {
-                                nearbyTeams.add(value["Team"]);
+                              destinationLat,
+                              destinationLong,
+                              userLocation!.latitude,
+                              userLocation!.longitude,
+                              5,
+                            )) {
+                              if (!nearbyTeams.contains(value["Team"])) {
+                                if (value["Team"] != GlobalteamName) {}
                               }
-                              // Map<dynamic, LatLng> newMarkerPositions = {
-                              //   value["Team"]:
-                              //       LatLng(destinationLat, destinationLong)
-                              // };
-                              // ref
-                              //     .read(teamMarkersProvider.notifier)
-                              //     .state
-                              //     .addEntries(
-                              //       newMarkerPositions.entries
-                              //           .map((entry) => MapEntry(
-                              //               entry.key.toString(),
-                              //               Marker(
-                              //                 point: entry.value,
-                              //                 builder: (context) =>
-                              //                     const Icon(Icons.place),
-                              //               ))),
+                            } else {
+                              if (nearbyTeams.contains(value["Team"])) {
+                                SchedulerBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  setState(() {
+                                    nearbyTeams.remove(value["Team"]);
+                                  });
+                                });
+                              }
                             }
                           }
                         });
-
-                        // for (var loc in snapshot.data!.docs) {
-                        //   if (userLocation != null) {
-                        //     double destinationLat = loc["Lat"];
-                        //     double destinationLong = loc["Long"];
-
-                        //     if (isWithinRadius(
-                        //         destinationLat,
-                        //         destinationLong,
-                        //         userLocation!.latitude,
-                        //         userLocation!.longitude,
-                        //         20.00)) {
-                        //       if (loc["Team"] != GlobalteamName) {
-                        //         nearbyTeams.add(loc["Team"]);
-                        //       }
-                        //       Map<dynamic, LatLng> newMarkerPositions = {
-                        //         loc["Team"]:
-                        //             LatLng(destinationLat, destinationLong)
-                        //       };
-                        //       ref
-                        //           .read(teamMarkersProvider.notifier)
-                        //           .state
-                        //           .addEntries(
-                        //             newMarkerPositions.entries
-                        //                 .map((entry) => MapEntry(
-                        //                     entry.key.toString(),
-                        //                     Marker(
-                        //                       point: entry.value,
-                        //                       builder: (context) =>
-                        //                           const Icon(Icons.place),
-                        //                     ))),
-                        //           );
-                        //     }
-                        //   }
-                        // }
-
                         if (nearbyTeams.isNotEmpty) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              for (var team in nearbyTeams)
-                                StreamBuilder(
-                                  stream: FirebaseFirestore.instance
-                                      .collection("Teams")
-                                      .doc(team)
-                                      .collection("players")
-                                      .snapshots(),
-                                  builder: (context, teamSnapshot) {
-                                    if (teamSnapshot.hasError) {
-                                      return Text(
-                                          "Error fetching team data: ${teamSnapshot.error}");
-                                    }
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: nearbyTeams.length,
+                            itemBuilder: (context, index) {
+                              String team = nearbyTeams[index];
+                              return StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection("Teams")
+                                    .doc(team)
+                                    .collection("players")
+                                    .snapshots(),
+                                builder: (context, teamSnapshot) {
+                                  if (teamSnapshot.hasError) {
+                                    return Text(
+                                        "Error fetching team data: ${teamSnapshot.error}");
+                                  }
 
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          "Nearby Players",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Column(
-                                          children: [
-                                            for (var playerDoc
-                                                in teamSnapshot.data!.docs)
-                                              Card(
-                                                elevation: 0,
-                                                color: Color.fromRGBO(
-                                                    29, 25, 11, 0.459),
-                                                child: ListTile(
-                                                  title: Text(
-                                                    playerDoc["name"],
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  subtitle:
-                                                      Text(playerDoc["email"]),
-                                                  trailing: ElevatedButton(
-                                                    onPressed: () {
-                                                      handleKillPlayer(
-                                                          team, playerDoc.id);
-                                                    },
-                                                    style: ButtonStyle(
-                                                      shape: MaterialStatePropertyAll(
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        "Nearby Players",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount:
+                                            teamSnapshot.data!.docs.length,
+                                        itemBuilder: (context, playerIndex) {
+                                          var playerDoc = teamSnapshot
+                                              .data!.docs[playerIndex];
+                                          return Card(
+                                            elevation: 0,
+                                            color: const Color.fromRGBO(
+                                                29, 25, 11, 0.459),
+                                            child: ListTile(
+                                              title: Text(
+                                                playerDoc["name"],
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle:
+                                                  Text(playerDoc["email"]),
+                                              trailing: ElevatedButton(
+                                                onPressed: () {
+                                                  handleKillPlayer(
+                                                      team, playerDoc.id);
+                                                },
+                                                style: ButtonStyle(
+                                                  shape:
+                                                      MaterialStatePropertyAll(
                                                           RoundedRectangleBorder(
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
                                                                           14))),
-                                                      backgroundColor: isCooldownActive
+                                                  backgroundColor:
+                                                      isCooldownActive
                                                           ? MaterialStateProperty
                                                               .all(const Color
                                                                   .fromRGBO(121,
@@ -261,34 +228,32 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                                                               .all(const Color
                                                                   .fromRGBO(75,
                                                                   62, 26, 1)),
-                                                    ),
-                                                    child: !isCooldownActive
-                                                        ? Text(
-                                                            "Kill",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )
-                                                        : Container(),
-                                                  ),
                                                 ),
+                                                child: !isCooldownActive
+                                                    ? const Text(
+                                                        "Kill",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      )
+                                                    : Container(),
                                               ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 16),
-                                      ],
-                                    );
-                                  },
-                                ),
-                            ],
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      const SizedBox(height: 16),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
                           );
                         }
-
                         return const Center(
-                          child: Text("Please wait for a bit..."),
+                          child: Text("No teams Nearby !!"),
                         );
                       },
                     ),

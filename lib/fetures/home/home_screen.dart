@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _subscribeToPlayerData();
 
     // Initialize the timer in initState
-    _locationUpdateTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    _locationUpdateTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
       _updatePlayerLocation();
     });
   }
@@ -82,43 +82,48 @@ class _HomeScreenState extends State<HomeScreen> {
         FirebaseDatabase.instance.ref('location/${widget.teamName}');
 
     _currentLocation = await _geolocatorServices.determinePosition();
-    await databaseRef.set({
-      'Lat': _currentLocation!.latitude,
-      'Long': _currentLocation!.longitude,
-      'Team': widget.teamName,
-    });
+
+    // Update the location for both Imposter and Crewmate players if they are alive
+    if (_playerRole == "Imposter" || _playerRole == "Crewmate") {
+      await databaseRef.set({
+        'Lat': _currentLocation!.latitude,
+        'Long': _currentLocation!.longitude,
+        'Team': widget.teamName,
+        'PlayerRole': _playerRole,
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 249, 219, 1),
+      backgroundColor: const Color.fromRGBO(255, 249, 219, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(255, 249, 219, 1),
+        backgroundColor: const Color.fromRGBO(255, 249, 219, 1),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: Card(
                 elevation: 0,
-                color: Color.fromRGBO(29, 25, 11, 0.459),
+                color: const Color.fromRGBO(29, 25, 11, 0.459),
                 child: SizedBox(
                   height: 40,
                   child: Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       if (_playerRole.isNotEmpty)
                         Text(
-                          "$_playerRole",
+                          _playerRole,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                               color: Colors.black),
                         ),
                       if (_playerRole == "Imposter")
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: Image(
                             image: AssetImage("assets/imposter.gif"),
                             height: 40,
@@ -129,15 +134,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
           )
         ],
-        title: Card(
+        title: const Card(
           elevation: 0,
           color: Color.fromRGBO(29, 25, 11, 0.459),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: SizedBox(
               width: 250,
               height: 30,
-              child: const Text(
+              child: Text(
                 'IRL Among Us',
                 style: TextStyle(
                     color: Colors.black,

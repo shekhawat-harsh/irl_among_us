@@ -17,7 +17,7 @@ num calculateDistance(num lat1, num lon1, num lat2, num lon2) {
       cos(toRadians(lat1)) * cos(toRadians(lat2)) * pow(sin(dLon / 2), 2);
   num c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
-  return earthRadius * c; // Distance in kilometers
+  return earthRadius * c * 1000; // Distance in kilometers
 }
 
 // Function to check if a destination point is within a specified radius of a source point
