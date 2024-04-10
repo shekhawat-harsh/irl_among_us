@@ -84,12 +84,11 @@ class _HomeScreenState extends State<HomeScreen> {
     _currentLocation = await _geolocatorServices.determinePosition();
 
     // Update the location for both Imposter and Crewmate players if they are alive
-    if (_playerRole == "Imposter" || _playerRole == "Crewmate") {
+    if (_playerRole == "Imposter") {
       await databaseRef.set({
         'Lat': _currentLocation!.latitude,
         'Long': _currentLocation!.longitude,
         'Team': widget.teamName,
-        'PlayerRole': _playerRole,
       });
     }
   }
