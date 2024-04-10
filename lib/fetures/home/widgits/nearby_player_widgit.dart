@@ -137,16 +137,12 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                             )) {
                               if (!nearbyTeams.contains(value["Team"])) {
                                 if (value["Team"] != GlobalteamName) {
-                                  setState(() {
-                                    nearbyTeams.add(value["Team"]);
-                                  });
+                                  nearbyTeams.add(value["Team"]);
                                 }
                               }
                             } else {
                               if (nearbyTeams.contains(value["Team"])) {
-                                setState(() {
-                                  nearbyTeams.remove(value["Team"]);
-                                });
+                                nearbyTeams.remove(value["Team"]);
                               }
                             }
                           }
@@ -206,8 +202,17 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                                               subtitle:
                                                   Text(playerDoc["email"]),
                                               trailing: ElevatedButton(
-                                                onPressed: () {
-                                                  handleKillPlayer(
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    isCooldownActive = true;
+                                                    cooldownEndTime =
+                                                        DateTime.now().add(
+                                                            const Duration(
+                                                                minutes: 15));
+                                                    saveCooldownState(
+                                                        true, cooldownEndTime);
+                                                  });
+                                                  await handleKillPlayer(
                                                       team, playerDoc.id);
                                                 },
                                                 style: ButtonStyle(
@@ -267,7 +272,7 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
     );
   }
 
-  void handleKillPlayer(String team, String playerId) async {
+  Future<void> handleKillPlayer(String team, String playerId) async {
     if (!isCooldownActive) {
       try {
         var fireStoreInstance = FirebaseFirestore.instance;
@@ -304,12 +309,6 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
 
           await FirestoreServices().markPlayerAsDead(playerId);
         }
-
-        setState(() {
-          isCooldownActive = true;
-          cooldownEndTime = DateTime.now().add(const Duration(minutes: 5));
-          saveCooldownState(true, cooldownEndTime);
-        });
       } catch (e) {
         print("Error removing : $e");
       }

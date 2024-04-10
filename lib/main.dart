@@ -1,7 +1,6 @@
 import 'package:among_us_gdsc/fetures/death_screen/dead_screen.dart';
 import 'package:among_us_gdsc/fetures/join_a_team/join_team.dart';
 import 'package:among_us_gdsc/fetures/landing/screen/landing_page.dart';
-import 'package:among_us_gdsc/fetures/verify_email/verify_email_screen.dart';
 import 'package:among_us_gdsc/fetures/waiting_area/wating_screen.dart';
 import 'package:among_us_gdsc/firebase_options.dart';
 import 'package:among_us_gdsc/services/firestore_services.dart';
@@ -67,70 +66,64 @@ class MyApp extends StatelessWidget {
             if (!isAuthenticated) {
               return LandingPage();
             } else {
-              if (!user.emailVerified) {
-                return const VerifyEmail();
-              } else {
-                return FutureBuilder<bool>(
-                  future: FirestoreServices().isPlayerRegistered(user.email!),
-                  builder: (context, AsyncSnapshot<bool> registrationSnapshot) {
-                    if (registrationSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return const Scaffold(
-                        body: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    } else if (registrationSnapshot.hasError) {
-                      return const Scaffold(
-                        body: Center(
-                          child: Text("Error checking player registration"),
-                        ),
+              return FutureBuilder<bool>(
+                future: FirestoreServices().isPlayerRegistered(user.email!),
+                builder: (context, AsyncSnapshot<bool> registrationSnapshot) {
+                  if (registrationSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Scaffold(
+                      body: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else if (registrationSnapshot.hasError) {
+                    return const Scaffold(
+                      body: Center(
+                        child: Text("Error checking player registration"),
+                      ),
+                    );
+                  } else {
+                    bool isRegistered = registrationSnapshot.data!;
+
+                    if (isRegistered) {
+                      print("is regestered is true ");
+                      return FutureBuilder<bool>(
+                        future: FirestoreServices().isPlayerAlive(user.email!),
+                        builder: (context, AsyncSnapshot<bool> aliveSnapshot) {
+                          if (aliveSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Scaffold(
+                              body: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          } else if (aliveSnapshot.hasError) {
+                            return const Scaffold(
+                              body: Center(
+                                child: Text("Error checking player status"),
+                              ),
+                            );
+                          } else {
+                            bool isAlive = aliveSnapshot.data ?? false;
+
+                            if (isAlive) {
+                              addingUser(user.email!);
+                              return const WaitingScreen();
+                            } else {
+                              // Navigate to DeadScreen if player is dead
+                              return const DeathScreen();
+                            }
+                          }
+                        },
                       );
                     } else {
-                      bool isRegistered = registrationSnapshot.data!;
-
-                      if (isRegistered) {
-                        print("is regestered is true ");
-                        return FutureBuilder<bool>(
-                          future:
-                              FirestoreServices().isPlayerAlive(user.email!),
-                          builder:
-                              (context, AsyncSnapshot<bool> aliveSnapshot) {
-                            if (aliveSnapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Scaffold(
-                                body: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            } else if (aliveSnapshot.hasError) {
-                              return const Scaffold(
-                                body: Center(
-                                  child: Text("Error checking player status"),
-                                ),
-                              );
-                            } else {
-                              bool isAlive = aliveSnapshot.data ?? false;
-
-                              if (isAlive) {
-                                addingUser(user.email!);
-                                return const WaitingScreen();
-                              } else {
-                                // Navigate to DeadScreen if player is dead
-                                return const DeathScreen();
-                              }
-                            }
-                          },
-                        );
-                      } else {
-                        print("is regestered is false");
-                        // Navigate to JoinTeamScreen if player is not registered
-                        return const JoinTeamScreen();
-                      }
+                      print("is regestered is false");
+                      // Navigate to JoinTeamScreen if player is not registered
+                      return const JoinTeamScreen();
                     }
-                  },
-                );
-              }
+                  }
+                },
+              );
             }
           }
         },

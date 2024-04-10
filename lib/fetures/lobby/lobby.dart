@@ -99,30 +99,27 @@ class LobbyScreen extends StatelessWidget {
                 players = snapshot.data!.docs.length;
                 return Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Expanded(
-                    child: SizedBox(
-                      height: 400,
-                      child: ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          DocumentSnapshot player = snapshot.data!.docs[index];
-                          return Card(
-                            color: const Color.fromARGB(255, 140, 130, 98),
-                            child: ListTile(
-                              title: Text(
-                                player['name'],
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(player['email'],
-                                  style: const TextStyle(
-                                      color:
-                                          Color.fromARGB(142, 255, 255, 255))),
+                  child: SizedBox(
+                    height: 400,
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot player = snapshot.data!.docs[index];
+                        return Card(
+                          color: const Color.fromARGB(255, 140, 130, 98),
+                          child: ListTile(
+                            title: Text(
+                              player['name'],
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
                             ),
-                          );
-                        },
-                      ),
+                            subtitle: Text(player['email'],
+                                style: const TextStyle(
+                                    color: Color.fromARGB(142, 255, 255, 255))),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 );

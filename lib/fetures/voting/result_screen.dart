@@ -13,6 +13,12 @@ class _PollingResultState extends State<PollingResult> {
 
   @override
   void initState() {
+    Future.delayed(
+      const Duration(seconds: 15),
+      () {
+        Navigator.pop(context);
+      },
+    );
     super.initState();
     // Ensure the WebView is initialized
     _webViewController = WebViewController();
@@ -20,13 +26,8 @@ class _PollingResultState extends State<PollingResult> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Polling Result'),
-      ),
-      body: WebViewWidget(
-        controller: _webViewController,
-      ),
+    return WebViewWidget(
+      controller: _webViewController,
     );
   }
 

@@ -1,5 +1,4 @@
 import 'package:among_us_gdsc/fetures/landing/screen/landing_page.dart';
-import 'package:among_us_gdsc/fetures/verify_email/verify_email_screen.dart';
 import 'package:among_us_gdsc/services/firebase_services.dart';
 import 'package:flutter/material.dart';
 
@@ -121,7 +120,7 @@ class SignUp extends StatelessWidget {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const VerifyEmail()),
+                                  builder: (context) => LandingPage()),
                               (route) => false);
                         } else {
                           Navigator.pop(context);

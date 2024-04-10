@@ -5,9 +5,8 @@ import 'package:among_us_gdsc/fetures/death_screen/dead_screen.dart';
 import 'package:among_us_gdsc/fetures/home/widgits/map_widgit.dart';
 import 'package:among_us_gdsc/fetures/home/widgits/nearby_player_widgit.dart';
 import 'package:among_us_gdsc/fetures/home/widgits/taskList1.dart';
-import 'package:among_us_gdsc/fetures/home/widgits/taskList2.dart';
+import 'package:among_us_gdsc/fetures/voting/voting_screen.dart';
 import 'package:among_us_gdsc/main.dart';
-import 'package:among_us_gdsc/services/firestore_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -99,6 +98,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var gameStatusInstance = FirebaseFirestore.instance
+        .collection("GameStatus")
+        .doc("Status")
+        .snapshots();
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 249, 219, 1),
       appBar: AppBar(
@@ -156,45 +160,34 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: SlidingSheet(
-        elevation: 8,
-        cornerRadius: 16,
-        snapSpec: const SnapSpec(
-          snap: true,
-          snappings: [0.1, 0.7, 1.0],
-          positioning: SnapPositioning.relativeToAvailableSpace,
-        ),
-        body: const MapWidget(),
-        builder: (context, state) {
-          if (_playerRole == 'Imposter') {
-            return const SizedBox(
-              height: 500,
-              child: Center(
-                child: NearbyPlayersListWidget(),
+      body: StreamBuilder(
+        stream: gameStatusInstance,
+        builder: (context, snapshot) {
+          if (snapshot.data!["voting"] == false) {
+            return SlidingSheet(
+              elevation: 8,
+              cornerRadius: 16,
+              snapSpec: const SnapSpec(
+                snap: true,
+                snappings: [0.1, 0.7, 1.0],
+                positioning: SnapPositioning.relativeToAvailableSpace,
               ),
-            );
-          } else {
-            return FutureBuilder(
-              future: FirestoreServices().getTaskValue(GlobalteamName),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
+              body: const MapWidget(),
+              builder: (context, state) {
+                if (_playerRole == 'Imposter') {
+                  return const SizedBox(
+                    height: 500,
+                    child: Center(
+                      child: NearbyPlayersListWidget(),
+                    ),
                   );
                 } else {
-                  final taskValue = snapshot.data ?? 0;
-                  if (taskValue == 1) {
-                    return TaskList1();
-                  } else {
-                    return const TaskList2();
-                  }
+                  return const SizedBox(height: 500, child: TasksScreen1());
                 }
               },
             );
+          } else {
+            return PollingScreen(email: GlobalteamName);
           }
         },
       ),

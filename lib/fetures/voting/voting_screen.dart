@@ -1,13 +1,6 @@
+import 'package:among_us_gdsc/fetures/voting/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-void main(List<String> args) {
-  runApp(const MaterialApp(
-    home: PollingScreen(
-      email: "iamharsh.shekhawat@gmail.com",
-    ),
-  ));
-}
 
 class PollingScreen extends StatefulWidget {
   final String email;
@@ -23,6 +16,13 @@ class _PollingScreenState extends State<PollingScreen> {
 
   @override
   void initState() {
+    Future.delayed(
+      const Duration(seconds: 70),
+      () {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (ctx) => const PollingResult()));
+      },
+    );
     super.initState();
     // Ensure the WebView is initialized
     _webViewController = WebViewController();
@@ -30,13 +30,8 @@ class _PollingScreenState extends State<PollingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Polling Screen'),
-      ),
-      body: WebViewWidget(
-        controller: _webViewController,
-      ),
+    return WebViewWidget(
+      controller: _webViewController,
     );
   }
 

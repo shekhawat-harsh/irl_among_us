@@ -99,11 +99,11 @@ class _BatchAllocationScreenState extends State<BatchAllocationScreen> {
                 ],
               ),
             ),
-            Positioned(
+            const Positioned(
                 left: 60,
                 right: 30,
                 bottom: 130,
-                child: const Text(
+                child: Text(
                   "Use your abilities and save yourself and your team from other teams...",
                   style: TextStyle(
                     fontSize: 24,

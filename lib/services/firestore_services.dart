@@ -11,8 +11,10 @@ class FirestoreServices {
     if (snapshot.exists) {
       final data = snapshot.data() as Map<String, dynamic>;
       final fieldValue = data['Task'];
+      print("task 1");
       return fieldValue;
     } else {
+      print("task 2");
       return 0;
     }
   }

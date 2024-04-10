@@ -43,7 +43,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
 
   Future<void> _playAudio() async {
     var play = await _audioPlayer.play(AssetSource('waiting.mp3'));
-    Timer(const Duration(seconds: 72), () async {
+    Timer(const Duration(seconds: 0), () async {
       play;
     });
   }
