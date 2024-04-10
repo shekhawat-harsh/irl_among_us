@@ -128,6 +128,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 40,
                           ),
                         )
+                      else if (_playerRole == "Crewmate")
+                        const Padding(
+                          padding: EdgeInsets.all(0.0),
+                          child: Image(
+                            image: AssetImage("assets/crewmate.gif"),
+                            height: 300,
+                          ),
+                        )
                     ],
                   ),
                 )),

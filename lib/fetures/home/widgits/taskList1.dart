@@ -15,6 +15,14 @@ class MyApp extends StatelessWidget {
           color: const Color.fromRGBO(
               255, 249, 219, 1), // Set the color of the app bar
         ),
+        textTheme: TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 22.0, // Adjust the font size of the app bar text
+            fontWeight: FontWeight.bold, // Font weight of the app bar text
+            color: Colors.black, // Color of the app bar text
+          ),
+          // You can customize other text styles here
+        ),
       ),
     );
   }
