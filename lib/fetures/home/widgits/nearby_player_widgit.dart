@@ -148,7 +148,7 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                           }
                         });
 
-                        ValueListenableBuilder(
+                        return ValueListenableBuilder(
                           valueListenable: nearbyTeams,
                           builder: (context, val, child) {
                             if (val.isNotEmpty) {
@@ -262,12 +262,12 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                                 },
                               );
                             }
+                            print(val);
                             return const Center(
                               child: Text("No teams Nearby !!"),
                             );
                           },
                         );
-                        return const Text("No teams");
                       },
                     ),
                   ),
