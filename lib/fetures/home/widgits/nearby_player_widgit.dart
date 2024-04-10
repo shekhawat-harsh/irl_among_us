@@ -114,18 +114,6 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                         locationData.forEach((key, value) {
                           num destinationLat = value["Lat"];
                           num destinationLong = value["Long"];
-                          ref
-                              .read(teamMarkersProvider.notifier)
-                              .state[value["Team"]] = Marker(
-                            point: LatLng(value["Lat"], value["Long"]),
-                            builder: (context) {
-                              return const Image(
-                                height: 1000,
-                                width: 1000,
-                                image: AssetImage("assets/locationPin.png"),
-                              );
-                            },
-                          );
 
                           if (userLocation != null) {
                             if (isWithinRadius(
@@ -146,6 +134,19 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                               }
                             }
                           }
+
+                          ref
+                              .read(teamMarkersProvider.notifier)
+                              .state[value["Team"]] = Marker(
+                            point: LatLng(value["Lat"], value["Long"]),
+                            builder: (context) {
+                              return const Image(
+                                height: 1000,
+                                width: 1000,
+                                image: AssetImage("assets/locationPin.png"),
+                              );
+                            },
+                          );
                         });
 
                         return ValueListenableBuilder(
