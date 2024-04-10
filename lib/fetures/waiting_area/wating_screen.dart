@@ -3,30 +3,12 @@ import 'dart:async';
 import 'package:among_us_gdsc/core/geolocator_services.dart';
 import 'package:among_us_gdsc/fetures/batch_allocation_screen/batch_allocation_imposter.dart';
 import 'package:among_us_gdsc/fetures/batch_allocation_screen/batch_alocation_crewmate.dart';
-import 'package:among_us_gdsc/firebase_options.dart';
 import 'package:among_us_gdsc/main.dart';
 import 'package:among_us_gdsc/services/firestore_services.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-void main(List<String> args) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MaterialApp(
-    home: Scaffold(
-      body: WaitingScreen(),
-    ),
-  ));
-}
 
 class WaitingScreen extends StatefulWidget {
   const WaitingScreen({super.key});

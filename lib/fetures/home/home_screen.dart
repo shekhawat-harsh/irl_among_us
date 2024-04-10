@@ -4,6 +4,10 @@ import 'package:among_us_gdsc/core/geolocator_services.dart';
 import 'package:among_us_gdsc/fetures/death_screen/dead_screen.dart';
 import 'package:among_us_gdsc/fetures/home/widgits/map_widgit.dart';
 import 'package:among_us_gdsc/fetures/home/widgits/nearby_player_widgit.dart';
+import 'package:among_us_gdsc/fetures/home/widgits/taskList1.dart';
+import 'package:among_us_gdsc/fetures/home/widgits/taskList2.dart';
+import 'package:among_us_gdsc/main.dart';
+import 'package:among_us_gdsc/services/firestore_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -170,11 +174,26 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else {
-            return const SizedBox(
-              height: 500,
-              child: Center(
-                child: Text('Put the cup up'),
-              ),
+            return FutureBuilder(
+              future: FirestoreServices().getTaskValue(GlobalteamName),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else {
+                  final taskValue = snapshot.data ?? 0;
+                  if (taskValue == 1) {
+                    return TaskList1();
+                  } else {
+                    return const TaskList2();
+                  }
+                }
+              },
             );
           }
         },

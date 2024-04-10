@@ -7,7 +7,6 @@ import 'package:among_us_gdsc/services/firestore_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -134,18 +133,19 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                               destinationLong,
                               userLocation!.latitude,
                               userLocation!.longitude,
-                              5,
+                              10,
                             )) {
                               if (!nearbyTeams.contains(value["Team"])) {
-                                if (value["Team"] != GlobalteamName) {}
+                                if (value["Team"] != GlobalteamName) {
+                                  setState(() {
+                                    nearbyTeams.add(value["Team"]);
+                                  });
+                                }
                               }
                             } else {
                               if (nearbyTeams.contains(value["Team"])) {
-                                SchedulerBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  setState(() {
-                                    nearbyTeams.remove(value["Team"]);
-                                  });
+                                setState(() {
+                                  nearbyTeams.remove(value["Team"]);
                                 });
                               }
                             }

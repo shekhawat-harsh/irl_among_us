@@ -5,6 +5,18 @@ class FirestoreServices {
   var teams = FirebaseFirestore.instance.collection('Teams');
   var allplayers = FirebaseFirestore.instance.collection("AllPlayers");
 
+  Future<num> getTaskValue(String teamName) async {
+    DocumentSnapshot snapshot = await teams.doc(teamName).get();
+
+    if (snapshot.exists) {
+      final data = snapshot.data() as Map<String, dynamic>;
+      final fieldValue = data['Task'];
+      return fieldValue;
+    } else {
+      return 0;
+    }
+  }
+
   Future<String> removePlayerFromTeam(
       String teamName, String playerEmail) async {
     try {
