@@ -100,7 +100,7 @@ class _ForgotPassWordState extends State<ForgotPassWord> {
                                   child: TextFormField(
                                     style: const TextStyle(
                                         color: Colors
-                                            .black), // Set text color to black
+                                            .white), // Set text color to black
                                     decoration: const InputDecoration(
                                       labelText: "Email",
                                       labelStyle: TextStyle(
