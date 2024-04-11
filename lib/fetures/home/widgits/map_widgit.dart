@@ -61,11 +61,12 @@ class _MapWidgetState extends State<MapWidget> {
         ),
         Consumer(
           builder: (context, ref, child) {
-            Timer(const Duration(seconds: 1), () {
+            Timer.periodic(const Duration(seconds: 1), (timer) {
               setState(() {
                 markers = ref.read(teamMarkersProvider).values.toList();
               });
             });
+
             return MarkerLayer(
               markers: markers,
             );

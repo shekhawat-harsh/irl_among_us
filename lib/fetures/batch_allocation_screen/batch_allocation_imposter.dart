@@ -152,7 +152,7 @@ class _BatchAllocationScreenState extends State<BatchAllocationScreen> {
             context,
             MaterialPageRoute(
               builder: (ctx) => HomeScreen(
-                teamName: GlobalteamName,
+                teamName: GlobalteamName!,
               ),
             ),
           );
@@ -173,63 +173,75 @@ class _BatchAllocationScreenState extends State<BatchAllocationScreen> {
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 249, 219, 1),
-      body: Stack(
-        children: [
-          Center(
-            child: Image.asset(
-              "assets/BadgeAllocation (1).png",
-              height: screenSize.height,
-              width: screenSize.width,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned(
-            left: screenSize.width * 0.3,
-            top: screenSize.height * 0.35,
-            child: Image.asset(
-              'assets/imposter.gif',
-              height: screenSize.height * 0.15,
-            ),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  '$_countdown',
-                  style: TextStyle(
-                    fontSize: screenSize.width * 0.06,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(110, 97, 62, 1),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final screenWidth = constraints.maxWidth;
+            final screenHeight = constraints.maxHeight;
+            final isPortrait = screenHeight > screenWidth;
+
+            return Stack(
+              children: [
+                Center(
+                  child: Image.asset(
+                    "assets/BadgeAllocation (1).png",
+                    width: screenWidth * 0.9,
+                    height:
+                        isPortrait ? screenHeight * 0.6 : screenHeight * 0.8,
+                    fit: BoxFit.contain,
                   ),
                 ),
-                const Text(
-                  'You are an Imposter !!',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(110, 97, 62, 1),
+                Positioned(
+                  left: screenWidth * 0.15,
+                  top: screenHeight * 0.25,
+                  child: Image.asset(
+                    'assets/imposter.gif',
+                    width: screenWidth * 0.15,
+                    height: screenHeight * 0.1,
+                  ),
+                ),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const SizedBox(height: 20),
+                      Text(
+                        '$_countdown',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.06,
+                          fontWeight: FontWeight.bold,
+                          color: const Color.fromRGBO(110, 97, 62, 1),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'You are an Imposter !!',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.06,
+                          fontWeight: FontWeight.bold,
+                          color: const Color.fromRGBO(110, 97, 62, 1),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  left: screenWidth * 0.06,
+                  right: screenWidth * 0.03,
+                  bottom: screenHeight * 0.13,
+                  child: Text(
+                    "Use your abilities and save yourself and your team from other teams...",
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.06,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromRGBO(110, 97, 62, 1),
+                    ),
                   ),
                 ),
               ],
-            ),
-          ),
-          Positioned(
-            left: screenSize.width * 0.1,
-            right: screenSize.width * 0.1,
-            bottom: screenSize.height * 0.2,
-            child: FittedBox(
-              child: Text(
-                "Use your abilities and save yourself and your team from other teams...",
-                style: TextStyle(
-                  fontSize: screenSize.width * 0.06,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(110, 97, 62, 1),
-                ),
-              ),
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }

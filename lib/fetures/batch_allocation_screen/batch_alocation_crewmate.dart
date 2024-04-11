@@ -156,7 +156,7 @@ class _BatchAllocationCrewmateScreenState
             context,
             MaterialPageRoute(
               builder: (ctx) => HomeScreen(
-                teamName: GlobalteamName,
+                teamName: GlobalteamName!,
               ),
             ),
           );
@@ -173,7 +173,9 @@ class _BatchAllocationCrewmateScreenState
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenWidth < 600;
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 249, 219, 1),
@@ -182,54 +184,54 @@ class _BatchAllocationCrewmateScreenState
           Center(
             child: Image.asset(
               "assets/BadgeAllocation (1).png",
-              height: screenSize.height,
-              width: screenSize.width,
-              fit: BoxFit.cover,
+              width: screenWidth * 0.8,
+              height: screenHeight * 0.8,
+              fit: BoxFit.contain,
             ),
           ),
           Positioned(
-            left: screenSize.width * 0.1,
-            top: screenSize.height * 0.3,
+            left: screenWidth * 0.1,
+            top: screenHeight * 0.3,
             child: Image.asset(
               'assets/crewmate.gif',
-              height: screenSize.height * 0.3,
+              height: screenHeight * 0.2,
             ),
           ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                const SizedBox(height: 20),
                 Text(
                   '$_countdown',
                   style: TextStyle(
-                    fontSize: screenSize.width * 0.06,
+                    fontSize: isSmallScreen ? 18 : 24,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(110, 97, 62, 1),
+                    color: const Color.fromRGBO(110, 97, 62, 1),
                   ),
                 ),
+                const SizedBox(height: 10),
                 Text(
                   'You are a Crewmate !!',
                   style: TextStyle(
-                    fontSize: screenSize.width * 0.06,
+                    fontSize: isSmallScreen ? 18 : 24,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(110, 97, 62, 1),
+                    color: const Color.fromRGBO(110, 97, 62, 1),
                   ),
                 ),
               ],
             ),
           ),
           Positioned(
-            left: screenSize.width * 0.1,
-            right: screenSize.width * 0.1,
-            bottom: screenSize.height * 0.2,
-            child: FittedBox(
-              child: Text(
-                "Use your abilities and save yourself and your team's imposter from other teams...",
-                style: TextStyle(
-                  fontSize: screenSize.width * 0.06,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(110, 97, 62, 1),
-                ),
+            left: screenWidth * 0.1,
+            right: screenWidth * 0.1,
+            bottom: screenHeight * 0.2,
+            child: Text(
+              "Use your abilities and save yourself and your team's imposter from other teams...",
+              style: TextStyle(
+                fontSize: isSmallScreen ? 16 : 24,
+                fontWeight: FontWeight.bold,
+                color: const Color.fromRGBO(110, 97, 62, 1),
               ),
             ),
           ),

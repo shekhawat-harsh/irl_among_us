@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:among_us_gdsc/main.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class DeathScreen extends StatefulWidget {
@@ -15,6 +17,9 @@ class _DeathScreenState extends State<DeathScreen> {
 
   @override
   void initState() {
+    if (GlobalteamName != null) {
+      FirebaseDatabase.instance.ref('location/$GlobalteamName').remove();
+    }
     _playAudio();
     super.initState();
   }

@@ -189,6 +189,10 @@ class _WaitingScreenState extends State<WaitingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenWidth < 600;
+
     var gameStatusInstance = FirebaseFirestore.instance
         .collection("GameStatus")
         .doc("Status")

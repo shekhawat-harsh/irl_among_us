@@ -12,7 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
-late String GlobalteamName;
+String? GlobalteamName;
 Position? location = Position(
     longitude: 0.00,
     latitude: 0.00,

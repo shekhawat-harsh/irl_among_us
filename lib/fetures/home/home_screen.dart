@@ -5,6 +5,7 @@ import 'package:among_us_gdsc/fetures/death_screen/dead_screen.dart';
 import 'package:among_us_gdsc/fetures/home/widgits/map_widgit.dart';
 import 'package:among_us_gdsc/fetures/home/widgits/nearby_player_widgit.dart';
 import 'package:among_us_gdsc/fetures/home/widgits/taskList1.dart';
+import 'package:among_us_gdsc/fetures/home/widgits/taskList2.dart';
 import 'package:among_us_gdsc/fetures/voting/voting_screen.dart';
 import 'package:among_us_gdsc/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,7 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _subscribeToPlayerData();
 
     // Initialize the timer in initState
-    _locationUpdateTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+    _locationUpdateTimer =
+        Timer.periodic(const Duration(milliseconds: 50), (timer) {
       _updatePlayerLocation();
     });
   }
@@ -190,12 +192,26 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 } else {
-                  return const SizedBox(height: 500, child: TasksScreen1());
+                  return FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection("Teams")
+                        .doc(GlobalteamName)
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (snapshot.data!["task"] == "1") {
+                        return const SizedBox(
+                            height: 500, child: Center(child: TasksScreen1()));
+                      } else {
+                        return SizedBox(
+                            height: 500, child: Center(child: TasksScreen2()));
+                      }
+                    },
+                  );
                 }
               },
             );
           } else {
-            return PollingScreen(email: GlobalteamName);
+            return PollingScreen(email: GlobalteamName!);
           }
         },
       ),

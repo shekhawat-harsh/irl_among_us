@@ -1,6 +1,8 @@
 import 'package:among_us_gdsc/fetures/lobby/randomImposterOrCrewmateGen.dart';
 import 'package:among_us_gdsc/fetures/waiting_area/wating_screen.dart';
+import 'package:among_us_gdsc/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LobbyScreen extends StatelessWidget {
@@ -11,6 +13,24 @@ class LobbyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(228, 223, 174, 1),
+        actions: [
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(75, 62, 26, 1),
+              ),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection("Teams")
+                    .doc(GlobalteamName)
+                    .collection("players")
+                    .doc(FirebaseAuth.instance.currentUser!.email!)
+                    .delete();
+              },
+              child: const Text("Leave"))
+        ],
+      ),
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
         color: const Color.fromARGB(0, 0, 0, 0),
