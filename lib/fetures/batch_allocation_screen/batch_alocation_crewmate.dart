@@ -184,14 +184,14 @@ class _BatchAllocationCrewmateScreenState
           Center(
             child: Image.asset(
               "assets/BadgeAllocation (1).png",
-              width: screenWidth * 0.8,
-              height: screenHeight * 0.8,
+              width: screenWidth * 1.2,
+              height: screenHeight * 1.2,
               fit: BoxFit.contain,
             ),
           ),
           Positioned(
             left: screenWidth * 0.1,
-            top: screenHeight * 0.3,
+            top: screenHeight * 0.27,
             child: Image.asset(
               'assets/crewmate.gif',
               height: screenHeight * 0.2,
@@ -201,35 +201,32 @@ class _BatchAllocationCrewmateScreenState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const SizedBox(height: 20),
+                const SizedBox(height: 40),
                 Text(
                   '$_countdown',
                   style: TextStyle(
-                    fontSize: isSmallScreen ? 18 : 24,
+                    fontSize: isSmallScreen ? 22 : 26,
                     fontWeight: FontWeight.bold,
                     color: const Color.fromRGBO(110, 97, 62, 1),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  'You are a Crewmate !!',
-                  style: TextStyle(
-                    fontSize: isSmallScreen ? 18 : 24,
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromRGBO(110, 97, 62, 1),
-                  ),
-                ),
+                const SizedBox(height: 35),
+                Text('You are a Crewmate !!',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: const Color.fromRGBO(110, 97, 62, 1),
+                        )),
               ],
             ),
           ),
           Positioned(
-            left: screenWidth * 0.1,
+            left: screenWidth * 0.16,
             right: screenWidth * 0.1,
-            bottom: screenHeight * 0.2,
+            bottom: screenHeight * 0.16,
             child: Text(
               "Use your abilities and save yourself and your team's imposter from other teams...",
               style: TextStyle(
-                fontSize: isSmallScreen ? 16 : 24,
+                fontSize: screenWidth * 0.053,
                 fontWeight: FontWeight.bold,
                 color: const Color.fromRGBO(110, 97, 62, 1),
               ),

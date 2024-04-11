@@ -207,40 +207,41 @@ class _WaitingScreenState extends State<WaitingScreen> {
             return Stack(
               children: [
                 Image.asset(
-                  "assets/Waiting screen1.png",
+                  "assets/Waiting screen (1).png",
                   height: screenSize.height,
                   width: screenSize.width,
                   fit: BoxFit.cover,
                 ),
-                Positioned.fill(
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Image.asset(
-                      "assets/Component 6.png",
-                    ),
-                  ),
-                ),
+                // Positioned.fill(
+                //   child: FittedBox(
+                //     fit: BoxFit.contain,
+                //     child: Image.asset(
+                //       "assets/Component 6(1).png",
+                //     ),
+                //   ),
+                // ),
                 Positioned(
-                  left: screenSize.width * 0.3,
-                  top: screenSize.height * 0.45,
+                  left: screenSize.width * 0.35,
+                  top: screenSize.height * 0.37,
                   child: Image.asset(
                     'assets/among-us-twerk.gif',
-                    height: screenSize.height * 0.2,
+                    height: screenSize.height * 0.1,
                   ),
                 ),
                 Positioned(
-                  left: screenSize.width * 0.1,
-                  right: screenSize.width * 0.1,
-                  bottom: screenSize.height * 0.3,
-                  child: FittedBox(
-                    child: Text(
-                      "Waiting for GDSC to start the game",
-                      style: TextStyle(
-                        fontSize: screenSize.width * 0.06,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(110, 97, 62, 1),
-                      ),
+                  left: screenSize.width * 0.19,
+                  right: screenSize.width * 0.19,
+                  bottom: screenSize.height * 0.37,
+                  // child: FittedBox(true
+
+                  child: Text(
+                    "Waiting for GDSC to start the game",
+                    style: TextStyle(
+                      fontSize: screenSize.width * 0.05,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(110, 97, 62, 1),
                     ),
+                    // ),
                   ),
                 ),
               ],

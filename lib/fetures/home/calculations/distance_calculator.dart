@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter_map_math/flutter_geo_math.dart';
+
 // Function to calculate the distance between two points using the Haversine formula
 num calculateDistance(num lat1, num lon1, num lat2, num lon2) {
   const num earthRadius = 6371; // Radius of the earth in kilometers
@@ -24,7 +26,9 @@ num calculateDistance(num lat1, num lon1, num lat2, num lon2) {
 bool isWithinRadius(
     num destLat, num destLon, num sourceLat, num sourceLon, num radius) {
   // Calculate the distance between the source and destination points
-  num distance = calculateDistance(sourceLat, sourceLon, destLat, destLon);
+  FlutterMapMath function = FlutterMapMath();
+  num distance = function.distanceBetween(destLat.toDouble(),
+      destLon.toDouble(), sourceLat.toDouble(), sourceLon.toDouble(), "meters");
 
   // Check if the distance is less than or equal to the specified radius
   return distance <= radius;

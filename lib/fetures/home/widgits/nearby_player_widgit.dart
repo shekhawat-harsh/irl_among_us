@@ -62,6 +62,7 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final dbref = FirebaseDatabase.instance.ref('location');
     return Consumer(
       builder: (context, ref, child) {
         return Scaffold(
@@ -88,7 +89,7 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                 Expanded(
                   child: SingleChildScrollView(
                     child: StreamBuilder(
-                      stream: FirebaseDatabase.instance.ref('location').onValue,
+                      stream: dbref.onValue,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -102,16 +103,18 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                         //     child: Text('Error: ${snapshot.error}'),
                         //   );
                         // }
-                        if (!snapshot.hasData) {
+                        if (!snapshot.hasData ||
+                            snapshot.data == null ||
+                            (snapshot.data! as DatabaseEvent).snapshot.value ==
+                                null) {
                           return const Center(
-                            child: Text("No players nearby."),
+                            child: Text("No Data Fetched"),
                           );
                         }
 
-                        DataSnapshot dataSnapshot = snapshot.data!.snapshot;
-                        Map<dynamic, dynamic> locationData =
-                            dataSnapshot.value as Map<dynamic, dynamic>;
-
+                        final locationData = Map<dynamic, dynamic>.from(
+                            (snapshot.data! as DatabaseEvent).snapshot.value
+                                as Map<dynamic, dynamic>);
                         locationData.forEach((key, value) {
                           num destinationLat = value["Lat"];
                           num destinationLong = value["Long"];
