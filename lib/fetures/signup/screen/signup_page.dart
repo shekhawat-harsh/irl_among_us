@@ -187,7 +187,7 @@ class SignUp extends StatelessWidget {
             Expanded(
               child: TextFormField(
                 style: const TextStyle(
-                    color: Colors.black), // Set text color to black
+                    color: Colors.white), // Set text color to black
                 decoration: InputDecoration(
                   labelText: labelText,
                   labelStyle: const TextStyle(
