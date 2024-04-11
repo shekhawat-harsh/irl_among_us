@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:graphx/graphx.dart';
+import 'package:latlong2/latlong.dart';
+
 // Function to calculate the distance between two points using the Haversine formula
 num calculateDistance(num lat1, num lon1, num lat2, num lon2) {
   const num earthRadius = 6371; // Radius of the earth in kilometers
@@ -20,11 +23,30 @@ num calculateDistance(num lat1, num lon1, num lat2, num lon2) {
   return earthRadius * c * 1000; // Distance in meter
 }
 
+double getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  var dLon = deg2rad(lon2 - lon1);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) *
+          Math.cos(deg2rad(lat2)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d * 1000;
+}
+
+double deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
 // Function to check if a destination point is within a specified radius of a source point
 bool isWithinRadius(
     num destLat, num destLon, num sourceLat, num sourceLon, num radius) {
   // Calculate the distance between the source and destination points
-  num distance = calculateDistance(sourceLat, sourceLon, destLat, destLon);
+  num distance =
+      getDistanceFromLatLonInKm(sourceLat, sourceLon, destLat, destLon);
 
   // Check if the distance is less than or equal to the specified radius
   return distance <= radius;

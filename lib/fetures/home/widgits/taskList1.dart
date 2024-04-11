@@ -61,50 +61,45 @@ class TasksScreen1 extends ConsumerWidget {
               });
 
               return Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: tasks
-                        .map((task) => Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 16.0),
-                              child: Card(
-                                color: const Color.fromARGB(255, 140, 130,
-                                    98), // Background color of the card
-                                elevation: 4, // Card elevation
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        task['location'] ?? '',
-                                        style: const TextStyle(
-                                          color: Colors
-                                              .white, // Text color of the location
-                                          fontWeight: FontWeight
-                                              .bold, // Font weight of the location
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        task['task'] ?? '',
-                                        style: const TextStyle(
-                                          color: Colors
-                                              .white, // Text color of the task
-                                          fontWeight: FontWeight
-                                              .normal, // Font weight of the task
-                                        ),
-                                      ),
-                                    ],
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: tasks
+                    .map((task) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16.0),
+                          child: Card(
+                            color: const Color.fromARGB(255, 140, 130,
+                                98), // Background color of the card
+                            elevation: 4, // Card elevation
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    task['location'] ?? '',
+                                    style: const TextStyle(
+                                      color: Colors
+                                          .white, // Text color of the location
+                                      fontWeight: FontWeight
+                                          .bold, // Font weight of the location
+                                    ),
                                   ),
-                                ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    task['task'] ?? '',
+                                    style: const TextStyle(
+                                      color: Colors
+                                          .white, // Text color of the task
+                                      fontWeight: FontWeight
+                                          .normal, // Font weight of the task
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ))
-                        .toList(),
-                  ),
-                ],
+                            ),
+                          ),
+                        ))
+                    .toList(),
               );
             },
           ),

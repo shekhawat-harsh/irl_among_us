@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -208,6 +210,17 @@ class FirestoreServices {
         await teamDocRef.collection('players').doc(email).set({
           'name': name,
           'email': email,
+        });
+
+        final random = Random();
+        int randomNumber = (random.nextInt(2) + 1);
+
+        await teamDocRef.set({
+          "TeamName": teamId,
+          "isAlive": true,
+          "score": 0,
+          "tasks": [],
+          "randomTask": randomNumber
         });
 
         return "success";
