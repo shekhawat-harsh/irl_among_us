@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter_map_math/flutter_geo_math.dart';
 import 'package:graphx/graphx.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -45,8 +46,9 @@ double deg2rad(deg) {
 bool isWithinRadius(
     num destLat, num destLon, num sourceLat, num sourceLon, num radius) {
   // Calculate the distance between the source and destination points
-  num distance =
-      getDistanceFromLatLonInKm(sourceLat, sourceLon, destLat, destLon);
+  final func = FlutterMapMath();
+  num distance = func.distanceBetween(sourceLat.toDouble(),
+      sourceLon.toDouble(), destLat.toDouble(), destLon.toDouble(), "meters");
 
   // Check if the distance is less than or equal to the specified radius
   return distance <= radius;

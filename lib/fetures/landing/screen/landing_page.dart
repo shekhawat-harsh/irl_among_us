@@ -7,26 +7,21 @@ import 'package:among_us_gdsc/services/firebase_services.dart';
 import 'package:among_us_gdsc/services/firestore_services.dart';
 import 'package:flutter/material.dart';
 
-void main(List<String> args) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // SystemChrome.setPreferredOrientations([
-  //   DeviceOrientation.portraitUp,
-  // ]);
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-  runApp(MaterialApp(
-    home: Scaffold(
-      body: LandingPage(),
-    ),
-  ));
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
 }
 
-class LandingPage extends StatelessWidget {
-  LandingPage({super.key});
+class _LandingPageState extends State<LandingPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final _emailController = TextEditingController();
+
   final _passwordController = TextEditingController();
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,71 +54,89 @@ class LandingPage extends StatelessWidget {
                   SizedBox(
                     height: 54,
                     width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        // Handle login logic here
-                        if (_formKey.currentState!.validate()) {
-                          showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return const PopScope(
-                                  canPop: false,
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              });
+                    child: (loading)
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ElevatedButton(
+                            onPressed: () async {
+                              // Handle login logic here
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  loading = true;
+                                });
 
-                          var res = await FirebaseServices().LogIn(
-                              _emailController.text.trim(),
-                              _passwordController.text.trim(),
-                              context);
-                          if (res == "Success") {
-                            bool isPlayerRegestered = await FirestoreServices()
-                                .isPlayerRegistered(_emailController.text);
+                                // showDialog(
+                                //     context: context,
+                                //     barrierDismissible: false,
+                                //     builder: (context) {
+                                //       return const PopScope(
+                                //         canPop: false,
+                                //         child: Center(
+                                //           child: CircularProgressIndicator(),
+                                //         ),
+                                //       );
+                                // });
 
-                            if (isPlayerRegestered) {
-                              String temaName = (await FirestoreServices()
-                                  .getTeamNameByEmail(_emailController.text))!;
-                              GlobalteamName = temaName;
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const WaitingScreen(),
-                                  ),
-                                  (route) => false);
-                            } else {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const JoinTeamScreen(),
-                                  ),
-                                  (route) => false);
-                            } // todo
-                          } else {
-                            Navigator.pop(context);
-                          }
-                        }
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromRGBO(17, 24, 40, 1),
-                        ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Adjust the radius as needed
+                                var res = await FirebaseServices().LogIn(
+                                    _emailController.text.trim(),
+                                    _passwordController.text.trim(),
+                                    context);
+                                if (res == "Success") {
+                                  bool isPlayerRegestered =
+                                      await FirestoreServices()
+                                          .isPlayerRegistered(
+                                              _emailController.text);
+
+                                  if (isPlayerRegestered) {
+                                    String temaName = (await FirestoreServices()
+                                        .getTeamNameByEmail(
+                                            _emailController.text))!;
+                                    GlobalteamName = temaName;
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const WaitingScreen(),
+                                        ),
+                                        (route) => false);
+                                    print("going to waitinfg scren");
+                                  } else {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const JoinTeamScreen(),
+                                        ),
+                                        (route) => false);
+                                    print("going to join team scrteen");
+                                  } // todo
+                                }
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color.fromRGBO(17, 24, 40, 1),
+                              ),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Adjust the radius as needed
+                                ),
+                              ),
+                            ),
+                            child: const Text(
+                              'Log in',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
-                        ),
-                      ),
-                      child: const Text(
-                        'Log in',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,

@@ -33,7 +33,8 @@ class RandomImpostorOrCrewmateGen {
           "Email": playerInTeam.docs[i - 1]["email"],
           "Character": character,
           "TeamName": teamName,
-          "IsAlive": true
+          "IsAlive": true,
+          "votes": 0
         });
       }
 

@@ -6,37 +6,55 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
 class TasksScreen2 extends ConsumerWidget {
-  final List<Map<String, String>> tasks = [
-    {'task': 'Pnc Password Game', 'location': 'Audi'},
-    {'task': 'Align Mirrors', 'location': 'CB'},
-    {'task': 'Tower of Hanoi', 'location': 'OAT'},
-    {'task': 'Icebreakers', 'location': '4H'},
-    {'task': 'Space Wars', 'location': 'EC dept'},
-    {'task': 'Hill Climb', 'location': 'Open Air Gym'},
-    {'task': 'Dumb Charades', 'location': 'Sp doc'},
-    {'task': 'Breadboard Circuit', 'location': 'Admin Block'},
-    {'task': 'Hurdles', 'location': 'LH'},
-    {'task': 'Brick Crossing', 'location': 'SAC'}
+  List<Map<String, dynamic>> tasks = [
+    {
+      'task': 'Icebreakers',
+      'location': '4h',
+    },
+    {
+      'task': 'Brick Crossing',
+      'location': 'admin block',
+    },
+    {
+      'task': 'PNC Password Guess',
+      'location': 'Audi',
+    },
+    {
+      'task': 'Angry Birds OpenCV',
+      'location': 'cb',
+    },
+    {
+      'task': 'Flappy Bird',
+      'location': 'Ec',
+    },
+    {
+      'task': 'Hill Climb',
+      'location': 'juice bar',
+    },
+    {
+      'task': 'Ball Game',
+      'location': 'LH',
+    },
+    {
+      'task': 'Tower of Hanoi',
+      'location': 'OAT',
+    },
+    {
+      'task': 'Ball and Brick',
+      'location': 'Sac',
+    },
+    {
+      'task': 'Flying Pen',
+      'location': 'sp doc',
+    },
   ];
 
   TasksScreen2({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<Map<String, String>> tasks = [
-      {'task': 'Pnc Password Game', 'location': 'Audi'},
-      {'task': 'Align Mirrors', 'location': 'CB'},
-      {'task': 'Tower of Hanoi', 'location': 'OAT'},
-      {'task': 'Icebreakers', 'location': '4H'},
-      {'task': 'Space Wars', 'location': 'EC dept'},
-      {'task': 'Hill Climb', 'location': 'Open Air Gym'},
-      {'task': 'Dumb Charades', 'location': 'Sp doc'},
-      {'task': 'Breadboard ckt', 'location': 'Admin Block'},
-      {'task': 'Hurdles', 'location': 'LH'},
-      {'task': 'Brick Crossing', 'location': 'SAC'}
-    ];
-
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(255, 249, 219, 1),
       body: Padding(
         padding: const EdgeInsets.only(top: 50),
         child: SingleChildScrollView(

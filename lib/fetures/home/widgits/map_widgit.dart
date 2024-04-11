@@ -19,7 +19,7 @@ class MapWidget extends StatefulWidget {
 class _MapWidgetState extends State<MapWidget> {
   List<Marker> markers = [];
   late final MapController _mapController;
-  GeolocatorServices geoservices = GeolocatorServices();
+  GeolocatorServices geolocatorServices = GeolocatorServices();
 
   @override
   void initState() {
@@ -39,41 +39,62 @@ class _MapWidgetState extends State<MapWidget> {
     }
   }
 
+  void _centerMapToInitialPosition() {
+    _mapController.move(
+      LatLng(31.7070, 76.5263),
+      17,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      mapController: _mapController,
-      options: MapOptions(
-        interactiveFlags: InteractiveFlag.all &
-            ~InteractiveFlag.pinchZoom &
-            ~InteractiveFlag.doubleTapZoom,
-        center: LatLng(31.7070, 76.5263),
-        zoom: 17.5,
-      ),
+    return Stack(
       children: [
-        TileLayer(
-          urlTemplate:
-              'https://api.mapbox.com/styles/v1/harshvss/clur4jhs701dg01pihy490el6/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaGFyc2h2c3MiLCJhIjoiY2x1cjQ5eTdxMDNxYjJpbjBoM2JwN2llYSJ9.bXR-Xw8Cn0suHXrgG_Sgnw',
-          additionalOptions: const {
-            'accessToken':
-                'pk.eyJ1IjoiaGFyc2h2c3MiLCJhIjoiY2x1cjQ5eTdxMDNxYjJpbjBoM2JwN2llYSJ9.bXR-Xw8Cn0suHXrgG_Sgnw',
-          },
+        FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(
+            interactiveFlags: InteractiveFlag.all &
+                ~InteractiveFlag.pinchZoom &
+                ~InteractiveFlag.doubleTapZoom,
+            center: LatLng(31.7070, 76.5263),
+            zoom: 17.5,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate:
+                  'https://api.mapbox.com/styles/v1/harshvss/clur4jhs701dg01pihy490el6/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaGFyc2h2c3MiLCJhIjoiY2x1cjQ5eTdxMDNxYjJpbjBoM2JwN2llYSJ9.bXR-Xw8Cn0suHXrgG_Sgnw',
+              additionalOptions: const {
+                'accessToken':
+                    'pk.eyJ1IjoiaGFyc2h2c3MiLCJhIjoiY2x1cjQ5eTdxMDNxYjJpbjBoM2JwN2llYSJ9.bXR-Xw8Cn0suHXrgG_Sgnw',
+              },
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                Timer.periodic(const Duration(seconds: 1), (timer) {
+                  setState(() {
+                    markers = ref.read(teamMarkersProvider).values.toList();
+                  });
+                });
+                return MarkerLayer(
+                  markers: markers,
+                );
+              },
+            ),
+          ],
         ),
-        Consumer(
-          builder: (context, ref, child) {
-            Timer.periodic(const Duration(seconds: 1), (timer) {
-              setState(() {
-                markers = ref.read(teamMarkersProvider).values.toList();
-              });
-            });
-
-            return MarkerLayer(
-              markers: markers,
-            );
-          },
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: IconButton.filled(
+              color: const Color.fromARGB(255, 172, 140, 23),
+              style: IconButton.styleFrom(backgroundColor: Colors.white),
+              onPressed: _centerMapToInitialPosition,
+              icon: const Icon(Icons.my_location_sharp),
+            ),
+          ),
         ),
       ],
-      // Other widgets
     );
   }
 
