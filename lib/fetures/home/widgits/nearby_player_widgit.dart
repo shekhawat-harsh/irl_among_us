@@ -274,7 +274,8 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                                                                 FontWeight
                                                                     .bold),
                                                       )
-                                                    : Container(),
+                                                    : const Icon(
+                                                        Icons.dangerous),
                                               ),
                                             ),
                                           );

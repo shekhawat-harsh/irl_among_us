@@ -1,3 +1,4 @@
+import 'package:among_us_gdsc/fetures/join_a_team/join_team.dart';
 import 'package:among_us_gdsc/fetures/landing/screen/landing_page.dart';
 import 'package:among_us_gdsc/services/firebase_services.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +121,7 @@ class SignUp extends StatelessWidget {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LandingPage()),
+                                  builder: (context) => const JoinTeamScreen()),
                               (route) => false);
                         } else {
                           Navigator.pop(context);
