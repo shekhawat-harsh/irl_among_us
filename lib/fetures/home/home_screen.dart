@@ -198,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         .doc(GlobalteamName)
                         .get(),
                     builder: (context, snapshot) {
-                      if (snapshot.data!["task"] == "1") {
+                      if (snapshot.data!["randomTask"] == "1") {
                         return const SizedBox(
                             height: 500, child: Center(child: TasksScreen1()));
                       } else {

@@ -1,3 +1,4 @@
+import 'package:among_us_gdsc/fetures/join_a_team/join_team.dart';
 import 'package:among_us_gdsc/fetures/lobby/randomImposterOrCrewmateGen.dart';
 import 'package:among_us_gdsc/fetures/waiting_area/wating_screen.dart';
 import 'package:among_us_gdsc/main.dart';
@@ -27,6 +28,12 @@ class LobbyScreen extends StatelessWidget {
                     .collection("players")
                     .doc(FirebaseAuth.instance.currentUser!.email!)
                     .delete();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const JoinTeamScreen(),
+                    ),
+                    (route) => false);
               },
               child: const Text("Leave"))
         ],

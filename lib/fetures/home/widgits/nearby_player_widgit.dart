@@ -25,7 +25,6 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
   Position? userLocation;
   bool isCooldownActive = false;
   late DateTime cooldownEndTime;
-  ValueNotifier<List<String>> nearbyTeams = ValueNotifier([]);
   bool _isButtonDisabled = true;
 
   @override
@@ -66,6 +65,15 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
     return Consumer(
       builder: (context, ref, child) {
         return Scaffold(
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.refresh))
+            ],
+          ),
           backgroundColor: const Color.fromRGBO(255, 249, 219, 1),
           body: Padding(
             padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
@@ -112,9 +120,18 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                           );
                         }
 
+<<<<<<< HEAD
                         final locationData = Map<dynamic, dynamic>.from(
                             (snapshot.data! as DatabaseEvent).snapshot.value
                                 as Map<dynamic, dynamic>);
+=======
+                        DataSnapshot dataSnapshot = snapshot.data!.snapshot;
+                        Map<dynamic, dynamic> locationData =
+                            dataSnapshot.value as Map<dynamic, dynamic>;
+
+                        List<String> nearbyTeams = [];
+
+>>>>>>> 0d6ce3f0aab8e2526144b7767cacb6bfa54bb7ab
                         locationData.forEach((key, value) {
                           num destinationLat = value["Lat"];
                           num destinationLong = value["Long"];
@@ -127,14 +144,14 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                               userLocation!.longitude,
                               10,
                             )) {
-                              if (!nearbyTeams.value.contains(value["Team"])) {
+                              if (!nearbyTeams.contains(value["Team"])) {
                                 if (value["Team"] != GlobalteamName) {
-                                  nearbyTeams.value.add(value["Team"]);
+                                  nearbyTeams.add(value["Team"]);
                                 }
                               }
                             } else {
-                              if (nearbyTeams.value.contains(value["Team"])) {
-                                nearbyTeams.value.remove(value["Team"]);
+                              if (nearbyTeams.contains(value["Team"])) {
+                                nearbyTeams.remove(value["Team"]);
                               }
                             }
                           }
@@ -153,99 +170,92 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                           );
                         });
 
-                        return ValueListenableBuilder(
-                          valueListenable: nearbyTeams,
-                          builder: (context, val, child) {
-                            if (val.isNotEmpty) {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: val.length,
-                                itemBuilder: (context, index) {
-                                  String team = val[index];
-                                  return StreamBuilder(
-                                    stream: FirebaseFirestore.instance
-                                        .collection("Teams")
-                                        .doc(team)
-                                        .collection("players")
-                                        .snapshots(),
-                                    builder: (context, teamSnapshot) {
-                                      if (teamSnapshot.hasError) {
-                                        return Text(
-                                            "Error fetching team data: ${teamSnapshot.error}");
-                                      }
+                        if (nearbyTeams.isNotEmpty) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: nearbyTeams.length,
+                            itemBuilder: (context, index) {
+                              String team = nearbyTeams[index];
+                              return StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection("Teams")
+                                    .doc(team)
+                                    .collection("players")
+                                    .snapshots(),
+                                builder: (context, teamSnapshot) {
+                                  if (teamSnapshot.hasError) {
+                                    return Text(
+                                        "Error fetching team data: ${teamSnapshot.error}");
+                                  }
 
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(height: 8),
-                                          const Text(
-                                            "Nearby Players",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          ListView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount:
-                                                teamSnapshot.data!.docs.length,
-                                            itemBuilder:
-                                                (context, playerIndex) {
-                                              var playerDoc = teamSnapshot
-                                                  .data!.docs[playerIndex];
-                                              return Card(
-                                                elevation: 0,
-                                                color: const Color.fromRGBO(
-                                                    29, 25, 11, 0.459),
-                                                child: ListTile(
-                                                  title: Text(
-                                                    playerDoc["name"],
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  subtitle:
-                                                      Text(playerDoc["email"]),
-                                                  trailing: ElevatedButton(
-                                                    onPressed: () async {
-                                                      // Disable the button immediately
-                                                      setState(() {
-                                                        _isButtonDisabled =
-                                                            true;
-                                                      });
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        "Nearby Players",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount:
+                                            teamSnapshot.data!.docs.length,
+                                        itemBuilder: (context, playerIndex) {
+                                          var playerDoc = teamSnapshot
+                                              .data!.docs[playerIndex];
+                                          return Card(
+                                            elevation: 0,
+                                            color: const Color.fromRGBO(
+                                                29, 25, 11, 0.459),
+                                            child: ListTile(
+                                              title: Text(
+                                                playerDoc["name"],
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle:
+                                                  Text(playerDoc["email"]),
+                                              trailing: ElevatedButton(
+                                                onPressed: () async {
+                                                  // Disable the button immediately
+                                                  setState(() {
+                                                    _isButtonDisabled = true;
+                                                  });
 
-                                                      // Perform the Firebase operation in a microtask
-                                                      Future.microtask(
-                                                          () async {
-                                                        await handleKillPlayer(
-                                                            team, playerDoc.id);
-                                                        setState(() {
-                                                          isCooldownActive =
-                                                              true;
-                                                          cooldownEndTime =
-                                                              DateTime.now().add(
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          10));
-                                                        });
-                                                        await saveCooldownState(
-                                                            true,
-                                                            cooldownEndTime);
-                                                      });
-                                                    },
-                                                    style: ButtonStyle(
-                                                      shape: MaterialStatePropertyAll(
+                                                  // Perform the Firebase operation in a microtask
+                                                  Future.microtask(() async {
+                                                    await handleKillPlayer(
+                                                        team, playerDoc.id);
+                                                    setState(() {
+                                                      isCooldownActive = true;
+                                                      cooldownEndTime =
+                                                          DateTime.now().add(
+                                                              const Duration(
+                                                                  seconds: 10));
+                                                    });
+                                                    await saveCooldownState(
+                                                        true, cooldownEndTime);
+                                                  });
+                                                },
+                                                style: ButtonStyle(
+                                                  shape:
+                                                      MaterialStatePropertyAll(
                                                           RoundedRectangleBorder(
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
                                                                           14))),
-                                                      backgroundColor: isCooldownActive
+                                                  backgroundColor:
+                                                      isCooldownActive
                                                           ? MaterialStateProperty
                                                               .all(const Color
                                                                   .fromRGBO(121,
@@ -254,36 +264,33 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                                                               .all(const Color
                                                                   .fromRGBO(75,
                                                                   62, 26, 1)),
-                                                    ),
-                                                    child: !isCooldownActive
-                                                        ? const Text(
-                                                            "Kill",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )
-                                                        : Container(),
-                                                  ),
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                          const SizedBox(height: 16),
-                                        ],
-                                      );
-                                    },
+                                                child: !isCooldownActive
+                                                    ? const Text(
+                                                        "Kill",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      )
+                                                    : Container(),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      const SizedBox(height: 16),
+                                    ],
                                   );
                                 },
                               );
-                            }
-                            print(val);
-                            return const Center(
-                              child: Text("No teams Nearby !!"),
-                            );
-                          },
+                            },
+                          );
+                        }
+                        print(nearbyTeams);
+                        return const Center(
+                          child: Text("No teams Nearby !!"),
                         );
                       },
                     ),
@@ -363,6 +370,9 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   @override
   void initState() {
+    Timer.periodic(const Duration(seconds: 3), (timer) {
+      setState(() {});
+    });
     super.initState();
     _remainingSeconds =
         ((widget.endTime - DateTime.now().millisecondsSinceEpoch) / 1000)

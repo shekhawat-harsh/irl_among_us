@@ -1,6 +1,11 @@
 import 'dart:math';
 
+<<<<<<< HEAD
 import 'package:flutter_map_math/flutter_geo_math.dart';
+=======
+import 'package:graphx/graphx.dart';
+import 'package:latlong2/latlong.dart';
+>>>>>>> 0d6ce3f0aab8e2526144b7767cacb6bfa54bb7ab
 
 // Function to calculate the distance between two points using the Haversine formula
 num calculateDistance(num lat1, num lon1, num lat2, num lon2) {
@@ -22,13 +27,36 @@ num calculateDistance(num lat1, num lon1, num lat2, num lon2) {
   return earthRadius * c * 1000; // Distance in meter
 }
 
+double getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  var dLon = deg2rad(lon2 - lon1);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) *
+          Math.cos(deg2rad(lat2)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d * 1000;
+}
+
+double deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
 // Function to check if a destination point is within a specified radius of a source point
 bool isWithinRadius(
     num destLat, num destLon, num sourceLat, num sourceLon, num radius) {
   // Calculate the distance between the source and destination points
+<<<<<<< HEAD
   FlutterMapMath function = FlutterMapMath();
   num distance = function.distanceBetween(destLat.toDouble(),
       destLon.toDouble(), sourceLat.toDouble(), sourceLon.toDouble(), "meters");
+=======
+  num distance =
+      getDistanceFromLatLonInKm(sourceLat, sourceLon, destLat, destLon);
+>>>>>>> 0d6ce3f0aab8e2526144b7767cacb6bfa54bb7ab
 
   // Check if the distance is less than or equal to the specified radius
   return distance <= radius;
