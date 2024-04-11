@@ -24,16 +24,16 @@ class TasksScreen2 extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<Map<String, String>> tasks = [
-      {'task': 'Image Puzzle', 'location': 'Audi'},
-      {'task': 'Minefield', 'location': 'CB'},
-      {'task': 'Hangman', 'location': 'OAT'},
-      {'task': 'Scribble', 'location': '4H'},
+      {'task': 'Pnc Password Game', 'location': 'Audi'},
+      {'task': 'Align Mirrors', 'location': 'CB'},
+      {'task': 'Tower of Hanoi', 'location': 'OAT'},
+      {'task': 'Icebreakers', 'location': '4H'},
       {'task': 'Space Wars', 'location': 'EC dept'},
-      {'task': 'Cham Cham Cham', 'location': 'Open Air Gym'},
-      {'task': 'Flying Per', 'location': 'Sp doc'},
-      {'task': 'Code Blocks', 'location': 'Admin Block'},
-      {'task': 'Ball Game', 'location': 'LH'},
-      {'task': 'Connect 4', 'location': 'SAC'}
+      {'task': 'Hill Climb', 'location': 'Open Air Gym'},
+      {'task': 'Dumb Charades', 'location': 'Sp doc'},
+      {'task': 'Breadboard ckt', 'location': 'Admin Block'},
+      {'task': 'Hurdles', 'location': 'LH'},
+      {'task': 'Brick Crossing', 'location': 'SAC'}
     ];
 
     return Scaffold(
