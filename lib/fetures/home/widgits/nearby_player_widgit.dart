@@ -120,18 +120,12 @@ class _NearbyPlayersListWidgetState extends State<NearbyPlayersListWidget> {
                           );
                         }
 
-<<<<<<< HEAD
-                        final locationData = Map<dynamic, dynamic>.from(
-                            (snapshot.data! as DatabaseEvent).snapshot.value
-                                as Map<dynamic, dynamic>);
-=======
                         DataSnapshot dataSnapshot = snapshot.data!.snapshot;
                         Map<dynamic, dynamic> locationData =
                             dataSnapshot.value as Map<dynamic, dynamic>;
 
                         List<String> nearbyTeams = [];
 
->>>>>>> 0d6ce3f0aab8e2526144b7767cacb6bfa54bb7ab
                         locationData.forEach((key, value) {
                           num destinationLat = value["Lat"];
                           num destinationLong = value["Long"];

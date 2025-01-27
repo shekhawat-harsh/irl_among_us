@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter_map_math/flutter_geo_math.dart';
 import 'package:graphx/graphx.dart';
 import 'package:latlong2/latlong.dart';
->>>>>>> 0d6ce3f0aab8e2526144b7767cacb6bfa54bb7ab
 
 // Function to calculate the distance between two points using the Haversine formula
 num calculateDistance(num lat1, num lon1, num lat2, num lon2) {
